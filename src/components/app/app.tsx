@@ -20,7 +20,7 @@ import {
 } from '@components';
 import { Routes, Route, useNavigate, useLocation } from 'react-router-dom';
 import { FC, useEffect } from 'react';
-import { useDispatch, useSelector } from '../../services/store';
+import { useDispatch, useSelector } from '@store';
 import { getAllIngredients, getIngredients } from '@slices';
 import { Preloader } from '@ui';
 
