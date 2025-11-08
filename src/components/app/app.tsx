@@ -16,9 +16,16 @@ import {
   AppHeader,
   IngredientDetails,
   Modal,
+  OrderInfo,
   ProtectedRoute
 } from '@components';
-import { Routes, Route, useNavigate, useLocation } from 'react-router-dom';
+import {
+  Routes,
+  Route,
+  useNavigate,
+  useLocation,
+  useMatch
+} from 'react-router-dom';
 import { FC, useEffect } from 'react';
 import { useDispatch, useSelector } from '@store';
 import { getAllIngredients, getIngredients } from '@slices';
@@ -29,16 +36,19 @@ const App: FC = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
+  const match = useMatch('/feed/:number');
+  console.log(match);
 
   useEffect(() => {
     dispatch(getAllIngredients());
   }, [dispatch]);
 
+  const backgroundLocation = location.state?.background;
+
   const closeModal = () => {
-    navigate('/');
+    navigate(-1);
   };
 
-  const backgroundLocation = location.state?.background;
   return (
     <div className={styles.app}>
       <AppHeader />
@@ -49,6 +59,7 @@ const App: FC = () => {
           <Routes location={backgroundLocation || location}>
             <Route path='/' element={<ConstructorPage />} />
             <Route path='/ingredients/:id' element={<IngredientDetails />} />
+            <Route path='/feed/:number' element={<OrderInfo />} />
             <Route path='/feed' element={<Feed />} />
             <Route
               path='/login'
@@ -109,6 +120,17 @@ const App: FC = () => {
                 element={
                   <Modal title='Детали ингредиента' onClose={closeModal}>
                     <IngredientDetails />
+                  </Modal>
+                }
+              />
+              <Route
+                path='/feed/:number'
+                element={
+                  <Modal
+                    title={'#' + match?.params?.number}
+                    onClose={closeModal}
+                  >
+                    <OrderInfo />
                   </Modal>
                 }
               />
