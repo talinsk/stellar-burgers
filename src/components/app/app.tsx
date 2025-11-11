@@ -28,7 +28,7 @@ import {
 } from 'react-router-dom';
 import { FC, useEffect } from 'react';
 import { useDispatch, useSelector } from '@store';
-import { getAllIngredients, getIngredients } from '@slices';
+import { checkUserAuth, getAllIngredients, getIngredients } from '@slices';
 import { Preloader } from '@ui';
 
 const App: FC = () => {
@@ -41,7 +41,11 @@ const App: FC = () => {
 
   useEffect(() => {
     dispatch(getAllIngredients());
-  }, [dispatch]);
+  }, []);
+
+  useEffect(() => {
+    dispatch(checkUserAuth());
+  }, []);
 
   const backgroundLocation = location.state?.background;
 
@@ -64,7 +68,7 @@ const App: FC = () => {
             <Route
               path='/login'
               element={
-                <ProtectedRoute>
+                <ProtectedRoute onlyUnAuth>
                   <Login />
                 </ProtectedRoute>
               }
@@ -72,7 +76,7 @@ const App: FC = () => {
             <Route
               path='/register'
               element={
-                <ProtectedRoute>
+                <ProtectedRoute onlyUnAuth>
                   <Register />
                 </ProtectedRoute>
               }
@@ -80,7 +84,7 @@ const App: FC = () => {
             <Route
               path='/forgot-password'
               element={
-                <ProtectedRoute>
+                <ProtectedRoute onlyUnAuth>
                   <ForgotPassword />
                 </ProtectedRoute>
               }
