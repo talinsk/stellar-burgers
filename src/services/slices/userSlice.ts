@@ -81,8 +81,9 @@ export const userSlice = createSlice({
   extraReducers: (builder) => {
     builder
       // login
-      .addCase(login.rejected, (state) => {
+      .addCase(login.rejected, (state, action) => {
         state.isLoading = false;
+        state.error = action.error?.message || '';
       })
       .addCase(login.fulfilled, (state, action) => {
         state.isLoading = false;
@@ -120,8 +121,9 @@ export const userSlice = createSlice({
         state.user = null;
       })
       // updating user
-      .addCase(updateUser.rejected, (state) => {
+      .addCase(updateUser.rejected, (state, action) => {
         state.isLoading = false;
+        state.error = action.error?.message || '';
       })
       .addCase(updateUser.fulfilled, (state, action) => {
         state.isLoading = false;
