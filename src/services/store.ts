@@ -10,7 +10,7 @@ import {
   currentOrderSlice,
   ordersSlice,
   userSlice
-} from '@slices';
+} from '@state';
 
 const rootReducer = combineSlices(
   ingredientsSlice,

@@ -1,13 +1,17 @@
-import { selectFeeds, loadFeedOrders } from '@slices';
+import {
+  selectFeedOrders,
+  loadFeedOrders,
+  selectIsOrdersLoading
+} from '@state';
 import { useDispatch, useSelector } from '@store';
 import { Preloader } from '@ui';
 import { FeedUI } from '@ui-pages';
-import { TOrder } from '@utils-types';
 import { FC, useEffect } from 'react';
 
 export const Feed: FC = () => {
   /** TODO: взять переменную из стора */
-  const { orders, isOrdersLoading: isFeedLoading } = useSelector(selectFeeds);
+  const orders = useSelector(selectFeedOrders);
+  const isOrdersLoading = useSelector(selectIsOrdersLoading);
   const dispatch = useDispatch();
 
   const loadAllFeed = () => {
@@ -15,12 +19,10 @@ export const Feed: FC = () => {
   };
 
   useEffect(() => {
-    if (!isFeedLoading) {
-      loadAllFeed();
-    }
+    loadAllFeed();
   }, []);
 
-  if (!orders.length) {
+  if (isOrdersLoading) {
     return <Preloader />;
   }
 

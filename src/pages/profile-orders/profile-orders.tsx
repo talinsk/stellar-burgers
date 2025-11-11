@@ -2,11 +2,10 @@ import {
   loadProfileOrders,
   selectIsOrdersLoading,
   selectProfileOrders
-} from '@slices';
+} from '@state';
 import { useDispatch, useSelector } from '@store';
 import { Preloader } from '@ui';
 import { ProfileOrdersUI } from '@ui-pages';
-import { TOrder } from '@utils-types';
 import { FC, useEffect } from 'react';
 
 export const ProfileOrders: FC = () => {

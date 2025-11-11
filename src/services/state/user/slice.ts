@@ -1,15 +1,13 @@
-import {
-  getUserApi,
-  loginUserApi,
-  logoutApi,
-  registerUserApi,
-  TLoginData,
-  TRegisterData,
-  updateUserApi
-} from '@api';
-import { createAsyncThunk, createSlice, isPending } from '@reduxjs/toolkit';
+import { createSlice, isPending } from '@reduxjs/toolkit';
 import { TUser } from '@utils-types';
-import { getCookie } from '../../utils/cookie';
+import {
+  authChecked,
+  getUser,
+  login,
+  logout,
+  registerUser,
+  updateUser
+} from './actions';
 
 type TUserState = {
   user: TUser | null;
@@ -25,45 +23,6 @@ const initialState: TUserState = {
   error: ''
 };
 
-export const login = createAsyncThunk(
-  'user/login',
-  async (loginData: TLoginData) => await loginUserApi(loginData)
-);
-
-export const logout = createAsyncThunk(
-  'user/logout',
-  async () => await logoutApi()
-);
-
-export const registerUser = createAsyncThunk(
-  'user/register',
-  async (registerData: TRegisterData) => await registerUserApi(registerData)
-);
-
-export const updateUser = createAsyncThunk(
-  'user/update',
-  async (updateData: TRegisterData) => await updateUserApi(updateData)
-);
-
-const getUser = createAsyncThunk('user/get', async () => await getUserApi());
-
-export const checkUserAuth = createAsyncThunk(
-  'user/checkUser',
-  (_, { dispatch }) => {
-    if (getCookie('accessToken')) {
-      dispatch(getUser())
-        .catch(() => {
-          dispatch(logout());
-        })
-        .finally(() => {
-          dispatch(authChecked());
-        });
-    } else {
-      dispatch(authChecked());
-    }
-  }
-);
-
 export const userSlice = createSlice({
   name: 'user',
   initialState,
@@ -73,13 +32,12 @@ export const userSlice = createSlice({
     selectUserError: (state) => state.error,
     selectUserLoading: (state) => state.isLoading
   },
-  reducers: {
-    authChecked: (state) => {
-      state.isAuthChecked = true;
-    }
-  },
+  reducers: {},
   extraReducers: (builder) => {
     builder
+      .addCase(authChecked, (state) => {
+        state.isAuthChecked = true;
+      })
       // login
       .addCase(login.rejected, (state, action) => {
         state.isLoading = false;
@@ -140,7 +98,6 @@ export const userSlice = createSlice({
   }
 });
 
-const { authChecked } = userSlice.actions;
 export const {
   selectUser,
   selectIsAuthChecked,

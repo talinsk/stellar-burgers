@@ -1,6 +1,6 @@
 import { useSelector } from '@store';
 import { ProtectedRouteProps } from './type';
-import { selectIsAuthChecked, selectUser } from '@slices';
+import { selectIsAuthChecked, selectUser } from '@state';
 import { Navigate, useLocation } from 'react-router-dom';
 import { Preloader } from '@ui';
 

@@ -28,20 +28,19 @@ import {
 } from 'react-router-dom';
 import { FC, useEffect } from 'react';
 import { useDispatch, useSelector } from '@store';
-import { checkUserAuth, getAllIngredients, getIngredients } from '@slices';
+import { checkUserAuth, getIngredients, selectIngredients } from '@state';
 import { Preloader } from '@ui';
 
 const App: FC = () => {
-  const { isIngredientsLoading } = useSelector(getIngredients);
+  const { isIngredientsLoading } = useSelector(selectIngredients);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
   const matchOrder = useMatch('/feed/:number');
   const matchProfileOrder = useMatch('/profile/orders/:number');
-  //console.log('matches:', matchOrder, matchProfileOrder);
 
   useEffect(() => {
-    dispatch(getAllIngredients());
+    dispatch(getIngredients());
   }, []);
 
   useEffect(() => {

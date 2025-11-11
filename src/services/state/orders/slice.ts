@@ -1,6 +1,6 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { TOrder } from '../../utils/types';
-import { getFeedsApi, getOrderByNumberApi, getOrdersApi } from '@api';
+import { createSlice } from '@reduxjs/toolkit';
+import { TOrder } from '@utils-types';
+import { loadFeedOrders, loadOrder, loadProfileOrders } from './actions';
 
 type TOrdersState = {
   orders: Array<TOrder>;
@@ -20,26 +20,12 @@ const initialState: TOrdersState = {
   orderByNumber: null
 };
 
-export const loadFeedOrders = createAsyncThunk(
-  'orders/get',
-  async () => await getFeedsApi()
-);
-
-export const loadProfileOrders = createAsyncThunk(
-  'orders/profile/get',
-  async () => await getOrdersApi()
-);
-
-export const loadOrder = createAsyncThunk(
-  'order/getByNumber',
-  async (orderId: number) => await getOrderByNumberApi(orderId)
-);
-
 export const ordersSlice = createSlice({
   name: 'orders',
   initialState,
   selectors: {
-    selectFeeds: (state) => state,
+    selectFeedOrders: (state) => state.orders,
+    selectFeedInfo: (state) => state,
     selectOrderByNumber: (state) => state.orderByNumber,
     selectProfileOrders: (state) => state.profileOrders,
     selectIsOrdersLoading: (state) => state.isOrdersLoading
@@ -50,7 +36,7 @@ export const ordersSlice = createSlice({
       .addCase(loadFeedOrders.pending, (state) => {
         state.isOrdersLoading = true;
       })
-      .addCase(loadFeedOrders.rejected, (state, action) => {
+      .addCase(loadFeedOrders.rejected, (state) => {
         state.isOrdersLoading = false;
       })
       .addCase(loadFeedOrders.fulfilled, (state, action) => {
@@ -62,7 +48,7 @@ export const ordersSlice = createSlice({
       .addCase(loadProfileOrders.pending, (state) => {
         state.isOrdersLoading = true;
       })
-      .addCase(loadProfileOrders.rejected, (state, action) => {
+      .addCase(loadProfileOrders.rejected, (state) => {
         state.isOrdersLoading = false;
       })
       .addCase(loadProfileOrders.fulfilled, (state, action) => {
@@ -72,7 +58,7 @@ export const ordersSlice = createSlice({
       .addCase(loadOrder.pending, (state) => {
         state.orderByNumber = null;
       })
-      .addCase(loadOrder.rejected, (state, action) => {})
+      .addCase(loadOrder.rejected, () => {})
       .addCase(loadOrder.fulfilled, (state, action) => {
         if (action.payload.orders && action.payload.orders.length > 0) {
           state.orderByNumber = action.payload.orders[0];
@@ -82,7 +68,8 @@ export const ordersSlice = createSlice({
 });
 
 export const {
-  selectFeeds,
+  selectFeedOrders,
+  selectFeedInfo,
   selectOrderByNumber,
   selectProfileOrders,
   selectIsOrdersLoading

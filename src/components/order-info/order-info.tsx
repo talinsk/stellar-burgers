@@ -4,20 +4,20 @@ import { OrderInfoUI } from '../ui/order-info';
 import { TIngredient, TOrder } from '@utils-types';
 import { useDispatch, useSelector } from '@store';
 import {
-  selectFeeds,
-  getIngredients,
+  selectFeedOrders,
   selectOrderByNumber,
   loadOrder,
-  selectProfileOrders
-} from '@slices';
+  selectProfileOrders,
+  selectIngredients
+} from '@state';
 import { Navigate, Params, useParams } from 'react-router-dom';
 
 export const OrderInfo: FC = () => {
   /** TODO: взять переменные orderData и ingredients из стора */
-  const { orders } = useSelector(selectFeeds);
+  const orders = useSelector(selectFeedOrders);
   const profileOrders = useSelector(selectProfileOrders);
   const orderByNumber = useSelector(selectOrderByNumber);
-  const { ingredients } = useSelector(getIngredients);
+  const { ingredients } = useSelector(selectIngredients);
   const { number } = useParams<Params>();
   const dispatch = useDispatch();
 

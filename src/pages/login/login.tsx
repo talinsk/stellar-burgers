@@ -1,7 +1,7 @@
 import { FC, SyntheticEvent, useState } from 'react';
 import { LoginUI } from '@ui-pages';
 import { useDispatch, useSelector } from '@store';
-import { login, selectUserError, selectUserLoading } from '@slices';
+import { login, selectUserError, selectUserLoading } from '@state';
 import { TLoginData } from '@api';
 import { Preloader } from '@ui';
 

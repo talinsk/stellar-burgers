@@ -1,11 +1,6 @@
-import {
-  createAsyncThunk,
-  createSlice,
-  nanoid,
-  PayloadAction
-} from '@reduxjs/toolkit';
-import { TConstructorIngredient, TIngredient, TOrder } from '../../utils/types';
-import { orderBurgerApi } from '@api';
+import { createSlice, nanoid, PayloadAction } from '@reduxjs/toolkit';
+import { TConstructorIngredient, TIngredient, TOrder } from '@utils-types';
+import { sendCurrentOrder } from './actions';
 
 type TConstructorItems = {
   bun: TConstructorIngredient | null;
@@ -26,11 +21,6 @@ const initialState: TCurrentOrderState = {
   orderRequest: false,
   newOrder: null
 };
-
-export const sendCurrentOrder = createAsyncThunk(
-  'currentOrder/send',
-  async (data: string[]) => await orderBurgerApi(data)
-);
 
 export const currentOrderSlice = createSlice({
   name: 'currentOrder',

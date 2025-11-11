@@ -9,7 +9,7 @@ import {
   selectNewOrderRequest,
   selectUser,
   sendCurrentOrder
-} from '@slices';
+} from '@state';
 import { useDispatch, useSelector } from '@store';
 import { useNavigate } from 'react-router-dom';
 

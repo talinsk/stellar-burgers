@@ -1,5 +1,5 @@
 import { TRegisterData } from '@api';
-import { selectUser, selectUserLoading, updateUser } from '@slices';
+import { selectUser, selectUserLoading, updateUser } from '@state';
 import { useDispatch, useSelector } from '@store';
 import { Preloader } from '@ui';
 import { ProfileUI } from '@ui-pages';
