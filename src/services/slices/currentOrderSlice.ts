@@ -1,5 +1,11 @@
-import { createSlice, nanoid, PayloadAction } from '@reduxjs/toolkit';
-import { TConstructorIngredient, TIngredient } from '../../utils/types';
+import {
+  createAsyncThunk,
+  createSlice,
+  nanoid,
+  PayloadAction
+} from '@reduxjs/toolkit';
+import { TConstructorIngredient, TIngredient, TOrder } from '../../utils/types';
+import { orderBurgerApi } from '@api';
 
 type TConstructorItems = {
   bun: TConstructorIngredient | null;
@@ -9,6 +15,7 @@ type TConstructorItems = {
 type TCurrentOrderState = {
   constructorItems: TConstructorItems;
   orderRequest: boolean;
+  newOrder: TOrder | null;
 };
 
 const initialState: TCurrentOrderState = {
@@ -16,14 +23,22 @@ const initialState: TCurrentOrderState = {
     bun: null,
     ingredients: []
   },
-  orderRequest: false
+  orderRequest: false,
+  newOrder: null
 };
+
+export const sendCurrentOrder = createAsyncThunk(
+  'currentOrder/send',
+  async (data: string[]) => await orderBurgerApi(data)
+);
 
 export const currentOrderSlice = createSlice({
   name: 'currentOrder',
   initialState,
   selectors: {
-    getCurrentOrder: (state) => state
+    selectCurrentOrder: (state) => state.constructorItems,
+    selectNewOrder: (state) => state.newOrder,
+    selectNewOrderRequest: (state) => state.orderRequest
   },
   reducers: {
     addIngredient: {
@@ -75,7 +90,28 @@ export const currentOrderSlice = createSlice({
       if (index < ingrs.length - 1) {
         [ingrs[index], ingrs[index + 1]] = [ingrs[index + 1], ingrs[index]];
       }
+    },
+    clearCurrentOrder: (state) => {
+      state.constructorItems.bun = null;
+      state.constructorItems.ingredients = [];
+      state.orderRequest = false;
+    },
+    clearNewOrder: (state) => {
+      state.newOrder = null;
     }
+  },
+  extraReducers: (builder) => {
+    builder
+      .addCase(sendCurrentOrder.pending, (state) => {
+        state.orderRequest = true;
+      })
+      .addCase(sendCurrentOrder.rejected, (state, action) => {
+        state.orderRequest = false;
+      })
+      .addCase(sendCurrentOrder.fulfilled, (state, action) => {
+        state.orderRequest = false;
+        state.newOrder = action.payload.order;
+      });
   }
 });
 
@@ -83,7 +119,9 @@ export const {
   addIngredient,
   removeIngredient,
   moveUpIngredient,
-  moveDownIngredient
+  moveDownIngredient,
+  clearCurrentOrder,
+  clearNewOrder
 } = currentOrderSlice.actions;
-export const reducer = currentOrderSlice.reducer;
-export const { getCurrentOrder } = currentOrderSlice.selectors;
+export const { selectCurrentOrder, selectNewOrder, selectNewOrderRequest } =
+  currentOrderSlice.selectors;

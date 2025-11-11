@@ -3,14 +3,14 @@ import { TIngredientsCategoryProps } from './type';
 import { TIngredient } from '@utils-types';
 import { IngredientsCategoryUI } from '../ui/ingredients-category';
 import { useSelector } from '@store';
-import { getCurrentOrder } from '@slices';
+import { selectCurrentOrder } from '@slices';
 
 export const IngredientsCategory = forwardRef<
   HTMLUListElement,
   TIngredientsCategoryProps
 >(({ title, titleRef, ingredients }, ref) => {
   /** TODO: взять переменную из стора */
-  const { constructorItems } = useSelector(getCurrentOrder);
+  const constructorItems = useSelector(selectCurrentOrder);
 
   const ingredientsCounters = useMemo(() => {
     const { bun, ingredients } = constructorItems;
