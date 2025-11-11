@@ -36,8 +36,9 @@ const App: FC = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
-  const match = useMatch('/feed/:number');
-  console.log(match);
+  const matchOrder = useMatch('/feed/:number');
+  const matchProfileOrder = useMatch('/profile/orders/:number');
+  //console.log('matches:', matchOrder, matchProfileOrder);
 
   useEffect(() => {
     dispatch(getAllIngredients());
@@ -64,6 +65,14 @@ const App: FC = () => {
             <Route path='/' element={<ConstructorPage />} />
             <Route path='/ingredients/:id' element={<IngredientDetails />} />
             <Route path='/feed/:number' element={<OrderInfo />} />
+            <Route
+              path='/profile/orders/:number'
+              element={
+                <ProtectedRoute>
+                  <OrderInfo />
+                </ProtectedRoute>
+              }
+            />
             <Route path='/feed' element={<Feed />} />
             <Route
               path='/login'
@@ -131,11 +140,24 @@ const App: FC = () => {
                 path='/feed/:number'
                 element={
                   <Modal
-                    title={'#' + match?.params?.number}
+                    title={'#' + matchOrder?.params?.number}
                     onClose={closeModal}
                   >
                     <OrderInfo />
                   </Modal>
+                }
+              />
+              <Route
+                path='/profile/orders/:number'
+                element={
+                  <ProtectedRoute>
+                    <Modal
+                      title={'#' + matchProfileOrder?.params?.number}
+                      onClose={closeModal}
+                    >
+                      <OrderInfo />
+                    </Modal>
+                  </ProtectedRoute>
                 }
               />
             </Routes>

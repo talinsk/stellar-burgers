@@ -7,13 +7,15 @@ import {
   selectFeeds,
   getIngredients,
   selectOrderByNumber,
-  loadOrder
+  loadOrder,
+  selectProfileOrders
 } from '@slices';
 import { Navigate, Params, useParams } from 'react-router-dom';
 
 export const OrderInfo: FC = () => {
   /** TODO: взять переменные orderData и ingredients из стора */
   const { orders } = useSelector(selectFeeds);
+  const profileOrders = useSelector(selectProfileOrders);
   const orderByNumber = useSelector(selectOrderByNumber);
   const { ingredients } = useSelector(getIngredients);
   const { number } = useParams<Params>();
@@ -28,6 +30,10 @@ export const OrderInfo: FC = () => {
     orderData = orderByNumber;
   } else {
     orderData = orders.find((o) => o.number == +number) || null;
+  }
+
+  if (!orderData) {
+    orderData = profileOrders.find((o) => o.number == +number) || null;
   }
 
   useEffect(() => {
