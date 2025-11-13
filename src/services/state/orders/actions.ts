@@ -8,10 +8,10 @@ export const loadFeedOrders = createAsyncThunk(
 
 export const loadProfileOrders = createAsyncThunk(
   'orders/profile/get',
-  async () => await getOrdersApi()
+  getOrdersApi
 );
 
 export const loadOrder = createAsyncThunk(
   'order/getByNumber',
-  async (orderId: number) => await getOrderByNumberApi(orderId)
+  getOrderByNumberApi
 );
