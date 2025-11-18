@@ -1,4 +1,12 @@
-import { addIngredient, currentOrderSliceReducer, moveDownIngredient, moveUpIngredient, removeIngredient } from './slice';
+import {
+  addIngredient,
+  clearCurrentOrder,
+  clearNewOrder,
+  currentOrderSliceReducer,
+  moveDownIngredient,
+  moveUpIngredient,
+  removeIngredient
+} from './slice';
 import { testBun, testMain, testSauce } from '../../__test__/testIngredients';
 
 describe('CurrentOrder slice tests', () => {
@@ -183,5 +191,44 @@ describe('CurrentOrder slice tests', () => {
       name: testSauce.name,
       price: testSauce.price
     });
+  });
+
+  it('test clearCurrentOrder', () => {
+    // add main, sauce and bun
+    let newState = currentOrderSliceReducer(undefined, addIngredient(testMain));
+    newState = currentOrderSliceReducer(newState, addIngredient(testSauce));
+    newState = currentOrderSliceReducer(newState, addIngredient(testBun));
+
+    // clear current order
+    newState = currentOrderSliceReducer(newState, clearCurrentOrder());
+
+    // ingredients were removed
+    expect(newState.constructorItems.ingredients).not.toBeNull();
+    expect(newState.constructorItems.ingredients).toHaveLength(0);
+    expect(newState.constructorItems.bun).toBeNull();
+    expect(newState.orderRequest).toBeFalsy();
+  });
+
+  it('test clearNewOrder', () => {
+    const initialWithOrder = {
+      constructorItems: {
+        bun: null,
+        ingredients: []
+      },
+      orderRequest: false,
+      newOrder: {
+        _id: 'testId',
+        status: 'testStatus',
+        name: 'testName',
+        createdAt: 'testCreatedAt',
+        updatedAt: 'testUpdatedAt',
+        number: 123,
+        ingredients: []
+      }
+    };
+    let newState = currentOrderSliceReducer(initialWithOrder, clearNewOrder());
+
+    // newOrder was cleared
+    expect(newState.newOrder).toBeNull();
   });
 });
