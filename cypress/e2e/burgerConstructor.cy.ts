@@ -80,7 +80,7 @@ describe('Burger Constructor', () => {
       // modal is closed
       cy.get('[data-testid=modalContent]').should('not.exist');
     });
-  })
+  });
 
   it('create new order', () => {
     const TestOrderNumber = '123456';

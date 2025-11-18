@@ -115,3 +115,5 @@ export const {
 } = currentOrderSlice.actions;
 export const { selectCurrentOrder, selectNewOrder, selectNewOrderRequest } =
   currentOrderSlice.selectors;
+
+export const currentOrderSliceReducer = currentOrderSlice.reducer;
