@@ -1,8 +1,9 @@
-import store from './store';
+import store, { rootReducer } from './store';
 
 describe('Store tests', () => {
   it('test rootReducer initialization', () => {
-    const state = store.getState();
+    const action = { type: 'UNKNOWN_ACTION' };
+    const state = rootReducer(undefined, action);
 
     expect(state).not.toBeNull();
 

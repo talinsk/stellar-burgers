@@ -12,7 +12,7 @@ import {
   userSlice
 } from '@state';
 
-const rootReducer = combineSlices(
+export const rootReducer = combineSlices(
   ingredientsSlice,
   currentOrderSlice,
   ordersSlice,
