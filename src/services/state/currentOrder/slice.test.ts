@@ -2,7 +2,7 @@ import {
   addIngredient,
   clearCurrentOrder,
   clearNewOrder,
-  currentOrderSliceReducer,
+  currentOrderSlice,
   moveDownIngredient,
   moveUpIngredient,
   removeIngredient
@@ -10,6 +10,21 @@ import {
 import { testBun, testMain, testSauce } from '../../__test__/testIngredients';
 
 describe('CurrentOrder slice tests', () => {
+  const currentOrderSliceReducer = currentOrderSlice.reducer;
+
+  it('test initialization', () => {
+    const newState = currentOrderSliceReducer(undefined, { type: '' });
+
+    expect(newState).toMatchObject({
+      constructorItems: {
+        bun: null,
+        ingredients: []
+      },
+      orderRequest: false,
+      newOrder: null
+    });
+  });
+
   it('test addIngredient: add bun', () => {
     const newState = currentOrderSliceReducer(
       undefined,

@@ -95,7 +95,7 @@ export const currentOrderSlice = createSlice({
       .addCase(sendCurrentOrder.pending, (state) => {
         state.orderRequest = true;
       })
-      .addCase(sendCurrentOrder.rejected, (state, action) => {
+      .addCase(sendCurrentOrder.rejected, (state) => {
         state.orderRequest = false;
       })
       .addCase(sendCurrentOrder.fulfilled, (state, action) => {
@@ -115,5 +115,3 @@ export const {
 } = currentOrderSlice.actions;
 export const { selectCurrentOrder, selectNewOrder, selectNewOrderRequest } =
   currentOrderSlice.selectors;
-
-export const currentOrderSliceReducer = currentOrderSlice.reducer;
