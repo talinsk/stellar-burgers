@@ -4,7 +4,7 @@ describe('Burger Constructor', () => {
     cy.intercept('GET', '/api/auth/user', { fixture: 'user' });
     cy.intercept('POST', '/api/orders', { fixture: 'order' });
     cy.setCookie('accessToken', 'testAccessToken');
-    cy.visit('http://localhost:4000');
+    cy.visit('/');
     // find bun item
     const bunTestId = 'itemIngredient_bun1';
     cy.get(`li[data-testid=${bunTestId}]`).should('be.visible').as('bun1');
