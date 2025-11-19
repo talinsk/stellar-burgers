@@ -1,4 +1,11 @@
-import { authChecked, getUser, login, logout, registerUser, updateUser } from './actions';
+import {
+  authChecked,
+  getUser,
+  login,
+  logout,
+  registerUser,
+  updateUser
+} from './actions';
 import { userSlice } from './slice';
 
 describe('User actions tests', () => {
