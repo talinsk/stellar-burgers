@@ -35,3 +35,20 @@
 //     }
 //   }
 // }
+
+Cypress.Commands.add('getByTestId', (selector, prefix) =>
+  cy.get(`${prefix || ''}[data-testid=${selector}]`)
+);
+
+declare global {
+  namespace Cypress {
+    interface Chainable {
+      getByTestId(
+        selector: string,
+        prefix?: string | undefined
+      ): Chainable<JQuery<HTMLElement>>;
+    }
+  }
+}
+
+export {};

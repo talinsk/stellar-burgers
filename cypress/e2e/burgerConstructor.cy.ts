@@ -7,7 +7,7 @@ describe('Burger Constructor', () => {
     cy.visit('/');
     // find bun item
     const bunTestId = 'itemIngredient_bun1';
-    cy.get(`li[data-testid=${bunTestId}]`).should('be.visible').as('bun1');
+    cy.getByTestId(bunTestId, 'li').should('be.visible').as('bun1');
   });
 
   it('add bun and main ingredients', () => {
@@ -15,26 +15,28 @@ describe('Burger Constructor', () => {
     cy.get('@bun1').find('button').should('be.visible').click();
 
     // check top bun
-    cy.get('[data-testid=constructorTop]')
+    cy.getByTestId('constructorTop')
       .should('be.visible')
       .should('contain.text', 'TestBun1Name')
       .should('contain.text', '(верх)');
 
     // check bottom bun
-    cy.get('[data-testid=constructorBottom]')
+    cy.getByTestId('constructorBottom')
       .should('be.visible')
       .should('contain.text', 'TestBun1Name')
       .should('contain.text', '(низ)');
 
-    cy.get('li[data-testid=itemIngredient_ingr1] button')
+    cy.getByTestId('itemIngredient_ingr1', 'li')
+      .find('button')
       .should('be.visible')
       .click();
-    cy.get('li[data-testid=itemIngredient_sauce1] button')
+    cy.getByTestId('itemIngredient_sauce1', 'li')
+      .find('button')
       .should('be.visible')
       .click();
 
     // check items block
-    cy.get('[data-testid=constructorItems]')
+    cy.getByTestId('constructorItems')
       .should('be.visible')
       .find('li')
       .should('have.length', 2)
@@ -51,7 +53,7 @@ describe('Burger Constructor', () => {
       cy.get('@bun1').find('a').should('be.visible').click();
 
       // find modal
-      cy.get('[data-testid=modalContent]')
+      cy.getByTestId('modalContent')
         .should('be.visible')
         .should('contain.text', 'TestBun1Name')
         .as('modalContent');
@@ -69,16 +71,16 @@ describe('Burger Constructor', () => {
         .click();
 
       // modal is closed
-      cy.get('[data-testid=modalContent]').should('not.exist');
+      cy.getByTestId('modalContent').should('not.exist');
     });
 
     it('open ingredient modal and close by the overlay click', () => {
-      cy.get('[data-testid=modalOverlay]')
+      cy.getByTestId('modalOverlay')
         .should('exist')
         .click(0, 0, { force: true });
 
       // modal is closed
-      cy.get('[data-testid=modalContent]').should('not.exist');
+      cy.getByTestId('modalContent').should('not.exist');
     });
   });
 
@@ -89,19 +91,22 @@ describe('Burger Constructor', () => {
     cy.get('@bun1').find('button').should('be.visible').click();
 
     // add 2 ingredients
-    cy.get('li[data-testid=itemIngredient_ingr1] button')
+    cy.getByTestId('itemIngredient_ingr1', 'li')
+      .find('button')
       .should('be.visible')
       .click();
-    cy.get('li[data-testid=itemIngredient_sauce1] button')
+    cy.getByTestId('itemIngredient_sauce1', 'li')
+      .find('button')
       .should('be.visible')
       .click();
 
-    cy.get('[data-testid=orderBottomContainer] button')
+    cy.getByTestId('orderBottomContainer')
+      .find('button')
       .should('be.visible')
       .click();
 
     // find modal
-    cy.get('[data-testid=modalContent]')
+    cy.getByTestId('modalContent')
       .should('be.visible')
       .should('contain.text', TestOrderNumber)
       .as('modalContent');
@@ -113,13 +118,13 @@ describe('Burger Constructor', () => {
       .click();
 
     // check top bun
-    cy.get('[data-testid=constructorTopEmpty]').should('be.visible');
+    cy.getByTestId('constructorTopEmpty').should('be.visible');
 
     // check bottom bun
-    cy.get('[data-testid=constructorBottomEmpty]').should('be.visible');
+    cy.getByTestId('constructorBottomEmpty').should('be.visible');
 
     // check items block
-    cy.get('[data-testid=constructorItems]')
+    cy.getByTestId('constructorItems')
       .should('be.visible')
       .should('contain.text', 'Выберите начинку')
       .find('li')
