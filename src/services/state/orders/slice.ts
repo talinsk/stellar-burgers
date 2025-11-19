@@ -11,7 +11,7 @@ type TOrdersState = {
   orderByNumber: TOrder | null;
 };
 
-const initialState: TOrdersState = {
+export const ordersInitialState: TOrdersState = {
   orders: [],
   profileOrders: [],
   total: 0,
@@ -22,7 +22,7 @@ const initialState: TOrdersState = {
 
 export const ordersSlice = createSlice({
   name: 'orders',
-  initialState,
+  initialState: ordersInitialState,
   selectors: {
     selectFeedOrders: (state) => state.orders,
     selectFeedInfo: (state) => state,

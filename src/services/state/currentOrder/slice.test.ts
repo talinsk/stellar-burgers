@@ -3,6 +3,7 @@ import {
   clearCurrentOrder,
   clearNewOrder,
   currentOrderSlice,
+  currentOrderInitialState,
   moveDownIngredient,
   moveUpIngredient,
   removeIngredient
@@ -15,14 +16,7 @@ describe('CurrentOrder slice tests', () => {
   it('test initialization', () => {
     const newState = currentOrderSliceReducer(undefined, { type: '' });
 
-    expect(newState).toMatchObject({
-      constructorItems: {
-        bun: null,
-        ingredients: []
-      },
-      orderRequest: false,
-      newOrder: null
-    });
+    expect(newState).toEqual(currentOrderInitialState);
   });
 
   it('test addIngredient: add bun', () => {

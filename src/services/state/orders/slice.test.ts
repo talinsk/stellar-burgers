@@ -1,4 +1,4 @@
-import { ordersSlice } from './slice';
+import { ordersInitialState, ordersSlice } from './slice';
 
 describe('Orders slice tests', () => {
   const ordersSliceReducer = ordersSlice.reducer;
@@ -6,13 +6,6 @@ describe('Orders slice tests', () => {
   it('test initialization', () => {
     const newState = ordersSliceReducer(undefined, { type: '' });
 
-    expect(newState).toMatchObject({
-      isOrdersLoading: false,
-      orders: [],
-      profileOrders: [],
-      total: 0,
-      totalToday: 0,
-      orderByNumber: null
-    });
+    expect(newState).toEqual(ordersInitialState);
   });
 });

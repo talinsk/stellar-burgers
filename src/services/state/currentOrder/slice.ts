@@ -13,7 +13,7 @@ type TCurrentOrderState = {
   newOrder: TOrder | null;
 };
 
-const initialState: TCurrentOrderState = {
+export const currentOrderInitialState: TCurrentOrderState = {
   constructorItems: {
     bun: null,
     ingredients: []
@@ -24,7 +24,7 @@ const initialState: TCurrentOrderState = {
 
 export const currentOrderSlice = createSlice({
   name: 'currentOrder',
-  initialState,
+  initialState: currentOrderInitialState,
   selectors: {
     selectCurrentOrder: (state) => state.constructorItems,
     selectNewOrder: (state) => state.newOrder,

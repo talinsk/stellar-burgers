@@ -1,4 +1,4 @@
-import { ingredientsSlice } from './slice';
+import { ingredientsSlice, ingredientsInitialState } from './slice';
 
 describe('Ingredients slice tests', () => {
   const ingredientsSliceReducer = ingredientsSlice.reducer;
@@ -6,9 +6,6 @@ describe('Ingredients slice tests', () => {
   it('test initialization', () => {
     const newState = ingredientsSliceReducer(undefined, { type: '' });
 
-    expect(newState).toMatchObject({
-      isIngredientsLoading: false,
-      ingredients: []
-    });
+    expect(newState).toEqual(ingredientsInitialState);
   });
 });

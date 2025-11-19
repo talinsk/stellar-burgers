@@ -1,4 +1,4 @@
-import { userSlice } from './slice';
+import { userInitialState, userSlice } from './slice';
 
 describe('User slice tests', () => {
   const userSliceReducer = userSlice.reducer;
@@ -6,11 +6,6 @@ describe('User slice tests', () => {
   it('test initialization', () => {
     const newState = userSliceReducer(undefined, { type: '' });
 
-    expect(newState).toMatchObject({
-      user: null,
-      isAuthChecked: false,
-      isLoading: false,
-      error: ''
-    });
+    expect(newState).toEqual(userInitialState);
   });
 });
