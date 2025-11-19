@@ -1,7 +1,7 @@
 import { loadFeedOrders, loadProfileOrders, loadOrder } from './actions';
 import { ordersSlice } from './slice';
 
-describe('CurrentOrder actions tests', () => {
+describe('Orders actions tests', () => {
   const testOrders = [
     {
       _id: 'testId1',

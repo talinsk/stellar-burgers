@@ -2,7 +2,7 @@ import { testBun, testMain, testSauce } from '../../__test__/testIngredients';
 import { getIngredients } from './actions';
 import { ingredientsSlice } from './slice';
 
-describe('CurrentOrder actions tests', () => {
+describe('Ingredients actions tests', () => {
   it('test getIngredients fulfilled', () => {
     const ingredients = [testBun, testMain, testSauce];
 
@@ -30,8 +30,7 @@ describe('CurrentOrder actions tests', () => {
 
   it('test getIngredients rejected', () => {
     const action = {
-      type: getIngredients.rejected.type,
-      error: { message: 'TestMessage' }
+      type: getIngredients.rejected.type
     };
 
     const state = ingredientsSlice.reducer(undefined, action);

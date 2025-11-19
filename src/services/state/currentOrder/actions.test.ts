@@ -41,8 +41,7 @@ describe('CurrentOrder actions tests', () => {
 
   it('test new order rejected', () => {
     const action = {
-      type: sendCurrentOrder.rejected.type,
-      error: { message: 'TestMessage' }
+      type: sendCurrentOrder.rejected.type
     };
 
     const state = currentOrderSlice.reducer(undefined, action);
