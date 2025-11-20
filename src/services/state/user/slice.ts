@@ -16,7 +16,7 @@ type TUserState = {
   error: string;
 };
 
-const initialState: TUserState = {
+export const userInitialState: TUserState = {
   user: null,
   isAuthChecked: false,
   isLoading: false,
@@ -25,7 +25,7 @@ const initialState: TUserState = {
 
 export const userSlice = createSlice({
   name: 'user',
-  initialState,
+  initialState: userInitialState,
   selectors: {
     selectUser: (state) => state.user,
     selectIsAuthChecked: (state) => state.isAuthChecked,

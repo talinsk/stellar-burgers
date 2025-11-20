@@ -1,0 +1,133 @@
+describe('Burger Constructor', () => {
+  beforeEach(() => {
+    cy.intercept('GET', '/api/ingredients', { fixture: 'ingredients.json' });
+    cy.intercept('GET', '/api/auth/user', { fixture: 'user' });
+    cy.intercept('POST', '/api/orders', { fixture: 'order' });
+    cy.setCookie('accessToken', 'testAccessToken');
+    cy.visit('/');
+    // find bun item
+    const bunTestId = 'itemIngredient_bun1';
+    cy.getByTestId(bunTestId, 'li').should('be.visible').as('bun1');
+  });
+
+  it('add bun and main ingredients', () => {
+    // add the bun
+    cy.get('@bun1').find('button').should('be.visible').click();
+
+    // check top bun
+    cy.getByTestId('constructorTop')
+      .should('be.visible')
+      .should('contain.text', 'TestBun1Name')
+      .should('contain.text', '(верх)');
+
+    // check bottom bun
+    cy.getByTestId('constructorBottom')
+      .should('be.visible')
+      .should('contain.text', 'TestBun1Name')
+      .should('contain.text', '(низ)');
+
+    cy.getByTestId('itemIngredient_ingr1', 'li')
+      .find('button')
+      .should('be.visible')
+      .click();
+    cy.getByTestId('itemIngredient_sauce1', 'li')
+      .find('button')
+      .should('be.visible')
+      .click();
+
+    // check items block
+    cy.getByTestId('constructorItems')
+      .should('be.visible')
+      .find('li')
+      .should('have.length', 2)
+      .as('items');
+
+    // check ingredients
+    cy.get('@items').eq(0).should('contain.text', 'TestIngredient1Name');
+    cy.get('@items').eq(1).should('contain.text', 'TestSauce1Name');
+  });
+
+  describe('Test modal', () => {
+    beforeEach(() => {
+      // click on the bun
+      cy.get('@bun1').find('a').should('be.visible').click();
+
+      // find modal
+      cy.getByTestId('modalContent')
+        .should('be.visible')
+        .should('contain.text', 'TestBun1Name')
+        .as('modalContent');
+
+      // check the title
+      cy.get('@modalContent')
+        .find('[data-testid=modalTitle]')
+        .should('contain.text', 'Детали ингредиента');
+    });
+
+    it('open ingredient modal and close by the button', () => {
+      cy.get('@modalContent')
+        .find('button[data-testid=modalCloseButton]')
+        .should('be.visible')
+        .click();
+
+      // modal is closed
+      cy.getByTestId('modalContent').should('not.exist');
+    });
+
+    it('open ingredient modal and close by the overlay click', () => {
+      cy.getByTestId('modalOverlay')
+        .should('exist')
+        .click(0, 0, { force: true });
+
+      // modal is closed
+      cy.getByTestId('modalContent').should('not.exist');
+    });
+  });
+
+  it('create new order', () => {
+    const TestOrderNumber = '123456';
+
+    // add the bun
+    cy.get('@bun1').find('button').should('be.visible').click();
+
+    // add 2 ingredients
+    cy.getByTestId('itemIngredient_ingr1', 'li')
+      .find('button')
+      .should('be.visible')
+      .click();
+    cy.getByTestId('itemIngredient_sauce1', 'li')
+      .find('button')
+      .should('be.visible')
+      .click();
+
+    cy.getByTestId('orderBottomContainer')
+      .find('button')
+      .should('be.visible')
+      .click();
+
+    // find modal
+    cy.getByTestId('modalContent')
+      .should('be.visible')
+      .should('contain.text', TestOrderNumber)
+      .as('modalContent');
+
+    // close modal
+    cy.get('@modalContent')
+      .find('button[data-testid=modalCloseButton]')
+      .should('be.visible')
+      .click();
+
+    // check top bun
+    cy.getByTestId('constructorTopEmpty').should('be.visible');
+
+    // check bottom bun
+    cy.getByTestId('constructorBottomEmpty').should('be.visible');
+
+    // check items block
+    cy.getByTestId('constructorItems')
+      .should('be.visible')
+      .should('contain.text', 'Выберите начинку')
+      .find('li')
+      .should('have.length', 0);
+  });
+});

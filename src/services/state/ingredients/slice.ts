@@ -7,14 +7,14 @@ type TIngredientsState = {
   isIngredientsLoading: boolean;
 };
 
-const initialState: TIngredientsState = {
+export const ingredientsInitialState: TIngredientsState = {
   ingredients: [],
   isIngredientsLoading: false
 };
 
 export const ingredientsSlice = createSlice({
   name: 'ingredients',
-  initialState,
+  initialState: ingredientsInitialState,
   selectors: {
     selectIngredients: (state) => state
   },
